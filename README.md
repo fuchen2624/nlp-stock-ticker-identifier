@@ -1,36 +1,154 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NLP Stock Ticker Identifier
 
-## Getting Started
+A modern web application that extracts stock ticker symbols from natural language queries across multiple markets.
 
-First, run the development server:
+## Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NVIDIA vs Alibaba
+![DEMO1](/public/demo1.png)
+
+NVIDIA vs Alibaba 香港
+![DEMO2](/public/demo2.png)
+
+is AMD a good investment right now?
+![DEMO3](/public/demo3.png)
+
+random text
+![DEMO4](/public/demo4.png)
+
+HSBC in Hong Kong market
+![DEMO5](/public/demo5.png)
+
+HSBC in US market
+![DEMO6](/public/demo6.png)
+
+## Features
+
+- Natural language processing for extracting stock tickers from plain text queries
+- Multi-market support (Global, US, Hong Kong, China)
+- Automatic language detection from user queries
+- Stock details retrieval with price and exchange information
+- Modern UI with multi-step flow
+- Server-side caching for improved performance
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js 18.x or higher
+- API key from OpenAI or Deepseek AI
+- API key from Financial Modeling Prep for extended stock details
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/nlp-stock-ticker-identifier.git
+   cd nlp-stock-ticker-identifier
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Environment setup:
+   Create a `.env.local` file in the root directory with the following variables:
+   ```env
+   # Required for AI ticker extraction
+   API_KEY=your_openai_or_deepseek_api_key
+   BASE_URL=https://api.deepseek.com/v1  # Or your OpenAI base URL
+   MODEL=deepseek-chat  # Or your preferred OpenAI model
+
+   # Optional - for extended stock information
+   FMP_API_KEY=your_financial_modeling_prep_api_key
+   ```
+
+4. Build the application:
+   ```bash
+   npm run build
+   ```
+
+5. Start the server:
+   ```bash
+   npm start
+   ```
+
+## API Usage
+
+The application exposes two main API endpoints:
+
+### 1. Extract Tickers from Query
+
+```http
+POST /api/extract-tickers
+Content-Type: application/json
+
+{
+  "query": "Looking for Apple's stock performance compared to Microsoft",
+  "market": "US"
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Parameters:**
+- `query` (required): The natural language text query
+- `market` (optional): The market to prioritize (Default: "Global")
+  - Available options: "Global", "US", "Asia", "Europe", "Emerging", "LatinAmerica", "MiddleEast", "Africa"
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Response:**
+```json
+{
+  "tickers": ["AAPL", "MSFT"],
+  "message": "Found 2 ticker(s)",
+  "source": "openai"
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Fetch Stock Details
 
-## Learn More
+```http
+GET /api/stock-details?symbol=AAPL
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Parameters:**
+- `symbol` (required): The stock ticker symbol
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Response:**
+```json
+{
+  "symbol": "AAPL",
+  "name": "Apple Inc.",
+  "price": 198.45,
+  "exchange": "NASDAQ",
+  "exchangeShortName": "NASDAQ",
+  "type": "stock"
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Assumptions
 
-## Deploy on Vercel
+1. **Language Detection**: The system automatically detects whether the query is in English, Simplified Chinese, or Traditional Chinese.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Market Prioritization**: When a market is specified, tickers will be prioritized for that market. For example, "HSBC" in the Asia market will return "0005.HK" while in the US market it will return "HSBC".
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Ticker Validation**: Extracted tickers are validated against a stock database to ensure accuracy.
+
+4. **Caching Strategy**: 
+   - API responses are cached for 1 hour on the client and 24 hours on the CDN
+   - Stock details are cached in-memory for 24 hours to minimize API calls
+
+5. **Fallback Mechanism**: If a stock is not found in the local database, the system will attempt to fetch it from the Financial Modeling Prep API if configured.
+
+## Development
+
+For local development, you can run:
+
+```bash
+npm run lint
+```
+
+**Note**: Do not run `npm run dev` after completing setup tasks as it may cause issues with the application.
+
+## License
+
+[MIT](LICENSE)
