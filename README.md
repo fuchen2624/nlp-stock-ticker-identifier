@@ -22,6 +22,16 @@ HSBC in Hong Kong market
 HSBC in US market
 ![DEMO6](/public/demo6.png)
 
+微軟、蘋果和亞馬遜的市值比較
+![DEMO7](/public/demo7.png)
+
+
+## Speed Analysis
+
+apart from the initial load time, the application is designed to be fast and responsive,  usually take few hundred milliseconds to get the result.
+
+![Speed Analysis](/public/speed_analysis2.png)
+
 ## Features
 
 - Natural language processing for extracting stock tickers from plain text queries
