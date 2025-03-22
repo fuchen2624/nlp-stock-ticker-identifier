@@ -5,8 +5,8 @@ import { validateSymbol } from './stockList';
 // Create a reusable OpenAI client instance
 let openaiClient: OpenAI | null = null;
 
-const MODEL = process.env.MODEL || 'deepseek-chat';
-const BASE_URL = process.env.BASE_URL || 'https://api.deepseek.com/v1';
+const MODEL = process.env.MODEL || 'gpt-4o-mini';
+const BASE_URL = process.env.BASE_URL || 'https://api.openai.com/v1';
 const API_KEY = process.env.API_KEY;
 
 export function getOpenAIClient(): OpenAI {

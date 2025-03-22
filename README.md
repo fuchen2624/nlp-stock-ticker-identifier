@@ -25,6 +25,8 @@ HSBC in US market
 微軟、蘋果和亞馬遜的市值比較
 ![DEMO7](/public/demo7.png)
 
+"facbook stock price" (misspelled company name)
+![DEMO8](/public/demo8.png)
 
 ## Speed Analysis
 
@@ -67,8 +69,8 @@ apart from the initial load time, the application is designed to be fast and res
    ```env
    # Required for AI ticker extraction
    API_KEY=your_openai_or_deepseek_api_key
-   BASE_URL=https://api.deepseek.com/v1  # Or your OpenAI base URL
-   MODEL=deepseek-chat  # Or your preferred OpenAI model
+   BASE_URL=https://api.openai.com/v1  # Or your Deepseek base URL (Optional if OpenAI is used)
+   MODEL=gpt-4o-mini  # Or your preferred Deepseek model (Optional if OpenAI is used)
 
    # Optional - for extended stock information
    FMP_API_KEY=your_financial_modeling_prep_api_key
